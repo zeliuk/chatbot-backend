@@ -1,0 +1,12 @@
+O365
+langchain
+langchain-community
+langchain-openai
+chromadb
+openai
+fastapi
+uvicorn
+apscheduler
+python-dotenv
+python-docx
+PyMuPDF
