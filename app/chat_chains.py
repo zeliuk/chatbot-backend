@@ -6,15 +6,21 @@ from langchain_openai import ChatOpenAI
 from .vectorstore import get_vectorstore
 
 CHAT_CHAINS = {}
+CHAT_MEMORY = {}
 
 def get_chain_for_user(chat_id: str, callback=None):
     if chat_id in CHAT_CHAINS and callback is None:
         return CHAT_CHAINS[chat_id]
 
-    memory = ConversationBufferMemory(
-        memory_key="chat_history",
-        return_messages=True
-    )
+    if chat_id in CHAT_MEMORY:
+        memory = CHAT_MEMORY[chat_id]
+    else:
+        memory = ConversationBufferMemory(
+            memory_key="chat_history",
+            return_messages=True
+        )
+        CHAT_MEMORY[chat_id] = memory
+
 
     vectorstore = get_vectorstore()
 
