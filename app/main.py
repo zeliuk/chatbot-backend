@@ -58,7 +58,15 @@ async def query(
     try:
         chain = get_chain_for_user(chat_id)
         response = chain.invoke({"question": question})
-        return {"answer": response["answer"]}
+        
+        # 🔍 Capturar documentos usados
+        docs = response.get("source_documents", [])
+        sources = list({doc.metadata.get("source", "desconocido") for doc in docs})
+
+        return {
+            "answer": response["answer"],
+            "sources": sources
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
