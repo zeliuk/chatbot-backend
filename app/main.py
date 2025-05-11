@@ -61,6 +61,10 @@ async def query(
         
         # 🔍 Capturar documentos usados
         docs = response.get("source_documents", [])
+        print("🔍 Documentos recuperados:")
+        for i, doc in enumerate(docs):
+            print(f"{i+1}. Fuente: {doc.metadata.get('source')}")
+            print(doc.page_content[:200])
         sources = list({doc.metadata.get("source", "desconocido") for doc in docs})
 
         return {
