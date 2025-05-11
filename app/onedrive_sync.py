@@ -132,7 +132,7 @@ def sync_documents():
     )
 
     if added_or_modified:
-        splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
+        splitter = RecursiveCharacterTextSplitter(chunk_size=600, chunk_overlap=100)
         docs_chunked = splitter.split_documents(added_or_modified)
         vectorstore.add_documents(docs_chunked)
 
