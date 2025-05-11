@@ -13,6 +13,9 @@ from app.chat_chains import get_chain_for_user, CHAT_CHAINS, CHAT_MEMORY
 from app.callbacks import StreamingHandler
 from app.cors_config import ALLOWED_ORIGINS
 
+from langchain_community.vectorstores import Chroma
+from langchain_openai import OpenAIEmbeddings
+
 load_dotenv()
 
 # LangSmith config
@@ -142,3 +145,35 @@ async def get_status():
 @app.get("/health")
 async def health_check():
     return {"status": "ok"}
+
+
+
+
+@app.get("/debug/vectorstore")
+async def debug_vectorstore(auth: str = Depends(verify_api_key)):
+    try:
+        persist_directory = os.getenv("CHROMA_PERSIST_DIRECTORY", "./chroma_db")
+        db = Chroma(
+            persist_directory=persist_directory,
+            embedding_function=OpenAIEmbeddings()
+        )
+
+        collection = db._collection
+        results = collection.get(include=["metadatas", "documents"])
+
+        docs_info = []
+
+        for i, (doc, meta) in enumerate(zip(results["documents"], results["metadatas"])):
+            docs_info.append({
+                "index": i + 1,
+                "source": meta.get("source", "desconocido"),
+                "preview": doc[:200] + "..." if doc else ""
+            })
+
+        return {
+            "total_documents": len(docs_info),
+            "documents": docs_info
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
