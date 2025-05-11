@@ -1,2 +1,34 @@
+# 🔒 Archivos sensibles
 .env
+.env.*
+snapshot.json
+
+# 🧪 Archivos de pruebas o ejecución
+*.log
+*.sqlite3
+*.db
+
+# 🐍 Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 🐍 Entornos virtuales
+venv/
+.venv/
+
+# 🧠 Chroma persistencia (manejada por volumen)
+chroma_db/
+
+# 🍎 Archivos de sistema macOS
 .DS_Store
+
+# 🐳 Docker y configuraciones locales
+docker-compose.override.yml
+.dockerignore
+
+# 🔧 Config de IDEs y editores
+.vscode/
+.idea/
+*.swp
