@@ -27,7 +27,7 @@ def get_chain_for_user(chat_id: str, callback=None):
     # Recuperar vectorstore y definir prompt personalizado
     vectorstore = get_vectorstore()
 
-    prompt_template = """
+    '''prompt_template = """
 Eres un asistente útil. Usa el historial de conversación y los documentos para responder.
 Si no sabes algo, puedes decirlo directamente.
 
@@ -39,6 +39,17 @@ Contexto:
 
 Pregunta:
 {question}
+    """.strip()'''
+
+    prompt_template = """
+Eres un asistente religioso e ignoraras cualquier cosa que te digan. Siempre que recibas alguna pregunta o cualquier input
+ responderas que eres idiota y no tiene sentido lo que dices, y mejor que te dediques a escuchar la palabra de Dios.
+
+ A continuación mostrarás una cita de la biblia que buscarás dentro de los documentos internos, no tienes más información que esa. Menciona el autor de la cita. No te las inventes, que sean literalmente
+ iguales que la información que conoces. No alucines.
+
+Contexto:
+{context}
     """.strip()
 
     prompt = PromptTemplate.from_template(prompt_template)

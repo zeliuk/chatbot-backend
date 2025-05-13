@@ -111,6 +111,10 @@ def get_onedrive_documents():
 
     return docs, metadata
 
+def batched(iterable, batch_size):
+    for i in range(0, len(iterable), batch_size):
+        yield iterable[i:i + batch_size]
+
 def sync_documents():
     previous_meta = load_snapshot()
     docs, current_meta = get_onedrive_documents()
@@ -134,7 +138,10 @@ def sync_documents():
     if added_or_modified:
         splitter = RecursiveCharacterTextSplitter(chunk_size=600, chunk_overlap=100)
         docs_chunked = splitter.split_documents(added_or_modified)
-        vectorstore.add_documents(docs_chunked)
+        
+        max_batch_size = 5000  # un poco menos que el límite real
+        for batch in batched(docs_chunked, max_batch_size):
+            vectorstore.add_documents(batch)
 
     if deleted_files:
         vectorstore.delete(ids=deleted_files)

@@ -1,7 +1,7 @@
 # 🔒 Archivos sensibles
 .env
 .env.*
-snapshot.json
+#snapshot.json
 
 # 🧪 Archivos de pruebas o ejecución
 *.log
