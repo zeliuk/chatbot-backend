@@ -44,6 +44,12 @@ def verify_api_key(x_api_key: str = Header(..., alias="X-API-Key")):
 # Inicialización del RAG
 chain = build_chain()
 
+
+@app.get("/")
+def read_root():
+    return {"status": "ok"}
+    
+
 # Sincronización periódica
 @app.on_event("startup")
 def startup_event():
